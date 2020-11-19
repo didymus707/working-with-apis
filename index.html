@@ -5,18 +5,26 @@
   <title>Document</title>
 </head>
 <body>
-  <img src="#" />
-  <button>Change Image</button>
+  <div class="container">
+    <div class="search-container">
+      <label for="search" aria-label="Search"></label>
+      <input type="search" id="search" aria-labelledby="search-button">
+      <input type="submit" id="search-button" value="Search">
+    </div>
+    <img src="#" />
+    <button>Change Image</button>
+  </div>
   <script>
     const img = document.querySelector('img');
     const btn = document.querySelector('button');
-    fetch('https://api.giphy.com/v1/gifs/translate?api_key=iEb5RBpSsx6R50hpI7UEdbe7VB0F7uYo&s=confused', {mode: 'cors'})
-    .then(response => response.json())
-    .then(response => { 
-      console.log(response);
-      img.src = response.data.images.original.url 
-    })
-    .catch(err => console.log(err));
+    btn.addEventListener('click', () => {
+      fetch('https://api.giphy.com/v1/gifs/translate?api_key=iEb5RBpSsx6R50hpI7UEdbe7VB0F7uYo&s=confused', {mode: 'cors'})
+      .then(response => response.json())
+      .then(response => { 
+        img.src = response.data.images.original.url;
+      })
+      .catch(err => console.log(err))
+    });
   </script>
 </body>
 </html>
