@@ -22,27 +22,29 @@
     const search = document.querySelector('#search');
     const submit = document.querySelector('#search-button');
     btn.addEventListener('click', () => {
-      fetch('https://api.giphy.com/v1/gifs/translate?api_key=iEb5RBpSsx6R50hpI7UEdbe7VB0F7uYo&s=cats', {mode: 'cors'})
-      .then(response => response.json())
-      .then(response => { 
-        img.src = response.data.images.original.url;
+      getCats().catch(err => {
+        console.log('Error:', err);
       })
-      .catch(err => console.log(err))
     });
+    const getCats = async () => {
+      const response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=iEb5RBpSsx6R50hpI7UEdbe7VB0F7uYo&s=cats', {mode: 'cors'})
+      const catData = await response.json();
+      img.src = catData.data.images.original.url;
+    }
     submit.addEventListener('click', (e) => {
       e.preventDefault();
       let query = search.value;
       const url = `https://api.giphy.com/v1/gifs/search?api_key=iEb5RBpSsx6R50hpI7UEdbe7VB0F7uYo&q=${query}&limit=25&offset=0&rating=g&lang=en`;
-      fetch(url)
-      .then(res => res.json())
-      .then(res => {
-        // console.log(res);
-        img.src = res.data[0].images.original.url;
-      }).catch(err => {
+      searchItems(url).catch(err => {
         let url1 = 'https://media0.giphy.com/media/3ohA2ZD9EkeK2AyfdK/giphy.gif?cid=3efc4379cfds1eqs897m92o170bmh8huh1co43wxdf2q9uwj&rid=giphy.gif';
         let url2 = 'https://media4.giphy.com/media/14uQ3cOFteDaU/giphy.gif?cid=3efc4379op1h4b4k0fzra1lehxr8c2utuhmnh8j0ynjw8mym&rid=giphy.gif';
       })
     });
+    const searchItems = async (link) => {
+      const res = await fetch(link);
+      const searchData = await res.json();
+      img.src = searchData.data[0].images.original.url;   
+    }
   </script>
 </body>
 </html>
