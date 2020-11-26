@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <title>Document</title>
 </head>
+<style>
+  .img-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 50px);
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
+  .none {
+    display: none;
+  }
+</style>
 <body>
   <div class="container">
     <div class="search-container">
@@ -13,7 +27,9 @@
         <input type="submit" id="search-button" value="Search">
       </form>
     </div>
-    <img src="#" />
+    <div class="img-container">
+      <img src="#" />
+    </div>
     <button>Change Image</button>
   </div>
   <script>
@@ -43,7 +59,18 @@
     const searchItems = async (link) => {
       const res = await fetch(link);
       const searchData = await res.json();
-      img.src = searchData.data[0].images.original.url;   
+      createImg(searchData);
+      console.log(searchData.data.length);
+    }
+    const createImg = res => {
+      const { data } = res
+      const imgCon = document.querySelector('.img-container');
+      img.classList.add('none');
+      data.forEach(item => {
+        const img = document.createElement('img');
+        img.src = item.images.original.url
+        imgCon.appendChild(img);
+      });
     }
   </script>
 </body>
